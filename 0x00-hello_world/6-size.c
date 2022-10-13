@@ -14,7 +14,7 @@
 
   int main(void)
 {
-	int a
+	int a;
 	long int b;
         long long c;
         char d;
