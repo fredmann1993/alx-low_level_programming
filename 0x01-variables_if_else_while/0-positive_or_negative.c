@@ -31,7 +31,7 @@ printf("%d is negative\n", n);
 }
 else
 {
-printf(" %d is 0\n", n)
+printf(" %d is 0\n", n);
 }
-return (0)
+return (0);
 }
