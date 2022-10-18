@@ -1,12 +1,8 @@
 #include "main.h"
-
-
-
 /**
- * putchar function
- * main function:  prints putchar as output
+ * main - Entry point
  *
- * Return: main function returns (0)
+ * Return: Always 0
  */
 
 int main(void)
