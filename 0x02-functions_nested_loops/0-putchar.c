@@ -11,9 +11,9 @@ int main(void)
 
 {
 
-char *put = "_putchar"
-_putchar(*put)
-_putchar('\n')
-return 0
+char *put = "putchar";
+_putchar(*put);
+_putchar('\n');
+return (0);
 
 }
