@@ -3,8 +3,10 @@
 
 
 /**
- * Main:  prints putchar
- * returns 0
+ * putchar function
+ * main function:  prints putchar as output
+ *
+ * Return: main function returns (0)
  */
 
 int main(void)
@@ -12,8 +14,13 @@ int main(void)
 {
 
 char *put = "putchar";
+while(*put)
+{
 _putchar(*put);
+*put++;
+
+
+}
 _putchar('\n');
 return (0);
-
 }
