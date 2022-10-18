@@ -7,7 +7,7 @@
  *
  * @c: The character parameter
  *
- * 
+ *
  *
  *  Return: 1 for alphabet and 0 otherwise
  *
