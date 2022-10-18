@@ -1,4 +1,4 @@
-#include<stdio.h>
+#include "main.h"
 
 
 
@@ -7,10 +7,13 @@
  * returns 0
  */
 
-int main()
+int main(void)
 
 {
 
-printf("_putchar\n");
-return (0);
+char *put = "_putchar"
+_putchar(*put)
+_putchar('\n')
+return 0
+
 }
