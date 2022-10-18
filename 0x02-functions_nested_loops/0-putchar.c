@@ -13,7 +13,7 @@ int main(void)
 
 {
 
-char *put = "_putchar";
+
 
 
 _putchar('_');
