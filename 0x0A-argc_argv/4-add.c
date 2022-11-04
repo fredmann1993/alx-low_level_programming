@@ -1,48 +1,51 @@
-#include "main.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
 /**
-* main - Prints the sum of args positive numbers
-* @argc: argument count
-* @argv: argument vector
-*
-* Return: Always zero
-*/
+* num_checker - checks if a given char is number or not
+* @a: char to be checked
+* Return: 1, if its a number, else 0
+**/
+int num_checker(char *a)
+{
+int i, num, len;
+
+i = 0;
+num = 0;
+len = strlen(a);
+while (i < len)
+{
+if (a[i] < '0' || a[i] > '9')
+{
+return (-1);
+}
+else
+num = num * 10 + (a[i] - '0');
+i++;
+}
+return (num);
+}
+/**
+* main - add positive numbers
+* @argc: arguement count
+* @argv: array of pointers to arguement strings
+* Return: result of addition or 1
+**/
 int main(int argc, char *argv[])
 {
-int i;
-unsigned int k, sum = 0;
-char *e;
+int i, num, sum;
 
-if (argc > 1)
-{
+sum = 0;
 for (i = 1; i < argc; i++)
 {
-e = argv[i];
-
-for (k = 0; k < strlen(e); k++)
-{
-if (e[k] < 48 || e[k] > 57)
+num = num_checker(argv[i]);
+if (num == -1)
 {
 printf("Error\n");
 return (1);
 }
+sum += num;
 }
-
-sum += atoi(e);
-e++;
-}
-
 printf("%d\n", sum);
-}
-else
-{
-printf("0\n");
-}
-
 return (0);
 }
-
-
