@@ -2,220 +2,231 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-int main(int argc, char **argv)
+int find_len(char *str);
+char *create_xarray(int size);
+char *iterate_zeroes(char *str);
+void get_prod(char *prod, char *mult, int digit, int zeroes);
+void add_nums(char *final_prod, char *next_prod, int next_len);
+
+/**
+* find_len - Finds the length of a string.
+* @str: The string to be measured.
+*
+* Return: The length of the string.
+*/
+int find_len(char *str)
 {
-char *n1, *n2;
-char *count;
-char *prod;
+int len = 0;
+
+while (*str++)
+len++;
+
+return (len);
+}
+
+/**
+* create_xarray - Creates an array of chars and initializes it with
+*                 the character 'x'. Adds a terminating null byte.
+* @size: The size of the array to be initialized.
+*
+* Description: If there is insufficient space, the
+*              function exits with a status of 98.
+* Return: A pointer to the array.
+*/
+char *create_xarray(int size)
+{
+char *array;
+int index;
+
+array = malloc(sizeof(char) * size);
+
+if (array == NULL)
+exit(98);
+
+for (index = 0; index < (size - 1); index++)
+array[index] = 'x';
+
+array[index] = '\0';
+
+return (array);
+}
+
+/**
+* iterate_zeroes - Iterates through a string of numbers containing
+*                  leading zeroes until it hits a non-zero number.
+* @str: The string of numbers to be iterate through.
+*
+* Return: A pointer to the next non-zero element.
+*/
+char *iterate_zeroes(char *str)
+{
+while (*str && *str == '0')
+str++;
+
+return (str);
+}
+
+/**
+* get_digit - Converts a digit character to a corresponding int.
+* @c: The character to be converted.
+*
+* Description: If c is a non-digit, the function
+*              exits with a status of 98.
+* Return: The converted int.
+*/
+int get_digit(char c)
+{
+int digit = c - '0';
+
+if (digit < 0 || digit > 9)
+{
+printf("Error\n");
+return (98);
+}
+
+return (digit);
+}
+
+/**
+* get_prod - Multiplies a string of numbers by a single digit.
+* @prod: The buffer to store the result.
+* @mult: The string of numbers.
+* @digit: The single digit.
+* @zeroes: The necessary number of leading zeroes.
+*
+* Description: If mult contains a non-digit, the function
+*              exits with a status value of 98.
+*/
+void get_prod(char *prod, char *mult, int digit, int zeroes)
+{
+int mult_len, num, tens = 0;
+
+mult_len = find_len(mult) - 1;
+mult += mult_len;
+
+while (*prod)
+{
+*prod = 'x';
+prod++;
+}
+
+prod--;
+
+while (zeroes--)
+{
+*prod = '0';
+prod--;
+}
+
+for (; mult_len >= 0; mult_len--, mult--, prod--)
+{
+if (*mult < '0' || *mult > '9')
+{
+printf("Error\n");
+exit(98);
+}
+
+num = (*mult - '0') * digit;
+num += tens;
+*prod = (num % 10) + '0';
+tens = num / 10;
+}
+
+if (tens)
+*prod = (tens % 10) + '0';
+}
+
+/**
+* add_nums - Adds the numbers stored in two strings.
+* @final_prod: The buffer storing the running final product.
+* @next_prod: The next product to be added.
+* @next_len: The length of next_prod.
+*/
+void add_nums(char *final_prod, char *next_prod, int next_len)
+{
+int num, tens = 0;
+
+while (*(final_prod + 1))
+final_prod++;
+
+while (*(next_prod + 1))
+next_prod++;
+
+for (; *final_prod != 'x'; final_prod--)
+{
+num = (*final_prod - '0') + (*next_prod - '0');
+num += tens;
+*final_prod = (num % 10) + '0';
+tens = num / 10;
+
+next_prod--;
+next_len--;
+}
+
+for (; next_len >= 0 && *next_prod != 'x'; next_len--)
+{
+num = (*next_prod - '0');
+num += tens;
+*final_prod = (num % 10) + '0';
+tens = num / 10;
+
+final_prod--;
+next_prod--;
+}
+
+if (tens)
+*final_prod = (tens % 10) + '0';
+}
+
+/**
+* main - Multiplies two positive numbers.
+* @argv: The number of arguments passed to the program.
+* @argc: An array of pointers to the arguments.
+*
+* Description: If the number of arguments is incorrect or one number
+*              contains non-digits, the function exits with a status of 98.
+* Return: Always 0.
+*/
+int main(int argc, char *argv[])
+{
+char *final_prod, *next_prod;
+int size, index, digit, zeroes = 0;
 
 if (argc != 3)
 {
-_puts("Error");
+printf("Error\n");
 exit(98);
 }
 
-n1 = argv[1];
-n2 = argv[2];
-
-count = malloc(sizeof(char) * (_strlen(n2) + 1));
-if (count == NULL)
+if (*(argv[1]) == '0')
+argv[1] = iterate_zeroes(argv[1]);
+if (*(argv[2]) == '0')
+argv[2] = iterate_zeroes(argv[2]);
+if (*(argv[1]) == '\0' || *(argv[2]) == '\0')
 {
-_puts("Error");
-exit(98);
-}
-count = _strcpy(count, n2);
-
-prod = malloc(sizeof(char) * 2);
-prod[0] = '0';
-prod[1] = '\0';
-while (notzero(count))
-{
-printf("Adding %s to %s\n", prod, n1);
-prod = _addstr(prod, n1);
-_dec(count);
-printf("Left: %s\n", count);
-}
-
-puts(prod);
-
-/*	free(prod);
-free(count);
-*/
-return (1);
-}
-
-char *clean(char *c)
-{
-unsigned int len = _strlen(c);
-char *ret;
-unsigned int i;
-
-if (c[0] == '0')
-ret = malloc(sizeof(char) * len);
-else
-return (c);
-
-for (i = 0; i < len; i++)
-ret[i] = c[i + 1];
-
-printf("Returning: %s\n", ret);
-return (ret);
-}
-
-void _dec(char *c)
-{
-for (; *c; c++)
-;
-c--;
-
-while (*c == '0')
-c--;
-
-*c -= 1;
-c++;
-
-for (; *c; c++)
-*c = '9';
-}
-
-int notzero(char *c)
-{
-for (; *c; c++)
-{
-if (*c != '0')
-return (1);
-}
+printf("0\n");
 return (0);
 }
 
-char *_tosize(char *c, unsigned int size)
+size = find_len(argv[1]) + find_len(argv[2]);
+final_prod = create_xarray(size + 1);
+next_prod = create_xarray(size + 1);
+
+for (index = find_len(argv[2]) - 1; index >= 0; index--)
 {
-char *p = c;
-
-while (_strlen(p) < size)
-p = _prepend(p, '0');
-
-return (p);
+digit = get_digit(*(argv[2] + index));
+get_prod(next_prod, argv[1], digit, zeroes++);
+add_nums(final_prod, next_prod, size - 1);
 }
-
-char *_addstr(char *s1, char *s2)
+for (index = 0; final_prod[index]; index++)
 {
-char *sum;
-char *o1; /* = s1; *, *o2 = s2;*/
-unsigned int temp;
-unsigned int len1, len2;
-
-sum = malloc(sizeof(char) * 2);
-if (sum == NULL)
-return (NULL);
-sum[0] = '0';
-sum[1] = '\0';
-
-len1 = _strlen(s1);
-len2 = _strlen(s2);
-
-printf("Old add: %s and %s\nSize %d vs %d\n", s1, s2, len1, len2);
-
-if (len1 > len2)
-s2 = _tosize(s2, len1);
-else
-s1 = _tosize(s1, len2);
-
-o1 = s1;
-
-printf("New add: %s and %s\n", s1, s2);
-for (; *s1; s1++)
-;
-s1--;
-
-for (; *s2; s2++)
-;
-s2--;
-printf("Comp: %p to %p\n", s1, o1);
-
-for (; s1 >= o1; s1--, s2--)
-{
-temp = *s1 - '0' + *s2 - '0';
-printf("Adding digit %c to %c\n", *s1, *s2);
-if (temp % 10 + (sum[0] - '0') > 9)
-{
-sum[0] = '0';
-sum = _prepend(sum, '0' + 1);
+if (final_prod[index] != 'x')
+putchar(final_prod[index]);
 }
-else
-{
-sum[0] = sum[0] + (temp % 10);
-sum = _prepend(sum, (temp / 10) + '0');
-}
-if (sum == NULL)
-return (NULL);
-}
+putchar('\n');
 
-sum = clean(sum);
-return (sum);
-}
+free(next_prod);
+free(final_prod);
 
-char *_prepend(char *p, char c)
-{
-unsigned int i;
-char *ret;
-
-ret = malloc(sizeof(char) * (_strlen(p) + 2));
-
-if (ret == NULL)
-return (NULL);
-
-ret[0] = c;
-for (i = 1; p[i - 1]; i++)
-ret[i] = p[i - 1];
-ret[i] = '\0';
-
-/*	free(p);
-*/
-return (ret);
-}
-
-/**
-* _strlen - returns the length of a string
-* @s: pointer to first character of string
-*
-* Return: length of string
-*/
-unsigned int _strlen(char *s)
-{
-unsigned int i;
-
-for (i = 0; *s != '\0'; s++, i++)
-;
-
-return (i);
-}
-
-/**
-* _puts - Prints a string
-* @str: pointer to string
-*/
-void _puts(char *str)
-{
-for (; *str != '\0'; str++)
-_putchar(*str);
-
-_putchar('\n');
-}
-
-/**
-* _strcpy - copies a string from the source to the buffer
-* @dest: pointer to string destination
-* Return: a pointer to the destination
-*/
-char *_strcpy(char *dest, char *src)
-{
-int i;
-
-for (i = 0; src[i]; i++)
-dest[i] = src[i];
-
-dest[i] = '\0';
-
-return (dest);
+return (0);
 }
