@@ -40,7 +40,7 @@ int index;
 
 array = malloc(sizeof(char) * size);
 
-if (array == NULL)
+if (!array)
 exit(98);
 
 for (index = 0; index < (size - 1); index++)
@@ -81,7 +81,7 @@ int digit = c - '0';
 if (digit < 0 || digit > 9)
 {
 printf("Error\n");
-return (98);
+exit(98);
 }
 
 return (digit);
