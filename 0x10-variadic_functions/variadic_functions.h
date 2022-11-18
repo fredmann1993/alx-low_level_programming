@@ -22,5 +22,22 @@ typedef struct format_types
 char *identifier;
 void (*f)(char *separator, va_list args);
 } f_dt;
+
+/**
+* struct op - Struct op
+*
+* @op: The operator
+* @f: The function associated
+*/
+typedef struct op
+{
+char *op;
+int (*f)(int a, int b);
+} op_t;
+
+
+
+
+
 #endif
 
