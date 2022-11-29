@@ -5,11 +5,11 @@ size_t free_listint_safe(listint_t **h);
 
 /**
 * looped_listint_count - Counts the number of unique nodes
-* in a looped listint_t linked list.
+*                      in a looped listint_t linked list.
 * @head: A pointer to the head of the listint_t to check.
 *
 * Return: If the list is not looped - 0.
-* Otherwise - the number of unique nodes in the list.
+*         Otherwise - the number of unique nodes in the list.
 */
 size_t looped_listint_count(listint_t *head)
 {
@@ -33,17 +33,6 @@ nodes++;
 tortoise = tortoise->next;
 hare = hare->next;
 }
-while (hare)
-{
-if (tortoise == hare)
-{
-tortoise = head;
-while (tortoise != hare)
-{
-nodes++;
-tortoise = tortoise->next;
-hare = hare->next;
-}
 
 tortoise = tortoise->next;
 while (tortoise != hare)
@@ -51,6 +40,7 @@ while (tortoise != hare)
 nodes++;
 tortoise = tortoise->next;
 }
+
 return (nodes);
 }
 
@@ -75,44 +65,32 @@ size_t free_listint_safe(listint_t **h)
 {
 listint_t *tmp;
 size_t nodes, index;
+
 nodes = looped_listint_count(*h);
 
-#include "lists.h"
-
-/**
-* find_listint_loop - Finds the loop contained in
-*                     a listint_t linked list.
-* @head: A pointer to the head of the listint_t list.
-*
-* Return: If there is no loop - NULL.
-*         Otherwise - the address of the node where the loop starts.
-*/
-listint_t *find_listint_loop(listint_t *head)
+if (nodes == 0)
 {
-listint_t *tortoise, *hare;
-
-if (head == NULL || head->next == NULL)
-return (NULL);
-
-tortoise = head->next;
-hare = (head->next)->next;
-while (hare)
+for (; h != NULL && *h != NULL; nodes++)
 {
-if (tortoise == hare)
-{
-tortoise = head;
-
-while (tortoise != hare)
-{
-tortoise = tortoise->next;
-hare = hare->next;
+tmp = (*h)->next;
+free(*h);
+*h = tmp;
+}
 }
 
-return (tortoise);
+else
+{
+for (index = 0; index < nodes; index++)
+{
+tmp = (*h)->next;
+free(*h);
+*h = tmp;
 }
 
-tortoise = tortoise->next;
-hare = (hare->next)->next;
+*h = NULL;
 }
 
-return (NULL);
+h = NULL;
+
+return (nodes);
+}
